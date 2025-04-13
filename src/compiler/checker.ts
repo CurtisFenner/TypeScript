@@ -39329,6 +39329,13 @@ export function createTypeChecker(host: TypeCheckerHost): TypeChecker {
                 }
             }
         }
+        if (type.flags & TypeFlags.TypeParameter) {
+            // The type could be upper-bounded by (a subtype of) the kind.
+            const upperBound = getConstraintOfType(type);
+            if (upperBound !== undefined && maybeTypeOfKind(upperBound, kind)) {
+                return true;
+            }
+        }
         return false;
     }
 
